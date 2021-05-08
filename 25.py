@@ -1,35 +1,31 @@
 import numpy as np
-import random
 import operator
+import random
 
-#Bekérem az inputokat
-n = int(input("Kérem adja meg a számot: "))
-size = int(input("Kérem adja meg a vektor méretét: "))
-interval = input("Kérem adja meg az intervallumot (pl. 1-100): ")
+n = int(input('Type in a number: '))
+size = int(input('Type in the size of the vector: '))
+start = int(input('Type in the start of the interval: '))
+stop = int(input('Type in the end of the interval: '))
 
-#Darabolom a stringet "-" szerint, majd átváltom intre.
-rng = interval.split("-")
-rng[0] = int(rng[0])
-rng[1] = int(rng[1])
-
-#Létrehozom a véletlenszerű műveleti jeleket
+#Véletlenszerű műveleti jeleket generáló függvény
 def randomOperator():
-    operators = ['+','-','*','/']
-    op = random.choice(operators)
+    ops = ['+', '-', '*', '/']
+    op = random.choice(ops)
     return op
 
+
 def expressionMake(v):
-    prime_numbers, even_numbers, odd_numbers = [],[],[]
-    #Prím számok
+    prime_numbers, even_numbers, odd_numbers = [], [], []
+
+    # megnézzük, mely számok prímek
     for i in range(len(v)):
         if v[i] > 1:
-            for j in range(2,v[i]):
+            for j in range(2, v[i]):
                 if (v[i] % j) == 0:
                     break
-                else:
-                    prime_numbers.append(v[i])
-
-    #Megnézem hogy a szám páros e vagy páratlan
+            else:
+                prime_numbers.append(v[i])
+    #megnézzük mely számok párosak, páratlanak, prímek és hozzáadjuk a listához
     for i in range(len(v)):
         if (v[i] % 2) == 0:
             even_numbers.append(v[i])
@@ -43,16 +39,25 @@ def expressionMake(v):
     else:
         return 'even_numbers', even_numbers
 
-#Létrehozom azt a függvényt,
-#mely a kapott listán végig iterál, hozzáad egy random operátort,
-#majd megoldja a kifejezést
+#Ez a függvény a kapott listán végig iterál, majd hozzáadja a kapott jeleket és megoldja azt
 def expressionSolve(iterable):
 
     expression = ''
     for i in range(len(iterable)):
         operation_string = randomOperator()
-        if i == len(iterable)-1: #Mivel az utolsó után nemkell operátor
+        if i == len(iterable) - 1:  # mert nem kell operator az utolso elem után
             expression += f'{iterable[i]}'
         else:
-            expression += f'{iterable[i]} {operation_string}'
+            expression += f'{iterable[i]} {operation_string} '
 
+    result = str(eval(expression))
+
+    return f'{expression} = {result}'
+
+
+for i in range(n):
+    v = np.random.randint(start, stop, size)
+
+    exp_type, exp = expressionMake(v)
+
+    print(f'{i + 1}. ({exp_type}) {expressionSolve(exp)}')
