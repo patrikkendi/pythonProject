@@ -18,3 +18,15 @@ def randomOperato():
     op = random.choice(operators)
     return op
 
+def expressionMake(v):
+    prime_numbers, even_numbers, odd_numbers = [],[],[]
+    #Prím számok
+    for i in range(len(v)):
+        if v[i] > 1:
+            for j in range(2,v[i]):
+                if (v[i] % j) == 0:
+                    break
+                else:
+                    prime_numbers.append(v[i])
+
+    for i in range(len(v)):
